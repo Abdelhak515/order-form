@@ -120,17 +120,17 @@
 
     const form = e.target;
     const data = {
-      product: form.product.value,
-      name: form.name.value,
-      address: form.address.value,
-      phone: form.phone.value,
-      size: form.size.options[form.size.selectedIndex].text,
-      wilaya: form.wilaya.options[form.wilaya.selectedIndex].text,
-      color: form.color.value,
-      total: form.total.value
-    };
+  product: form.product.value,
+  name: form.name.value,
+  address: form.address.value,
+  phone: form.phone.value,
+  size: form.size.options[form.size.selectedIndex].text,
+  wilaya: form.wilaya.options[form.wilaya.selectedIndex].text,
+  color: form.color.value,
+  total: form.totalInput.value
+};
 
-    fetch("https://script.google.com/macros/s/AKfycbw6_PhgK7HjPZiH-M0eimiMU7jnZkidUSH4QCBWSOn7LNw7EKMMIWe2eJ2vdunN1oo/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbz8FR6fyLWOwavZySEMmGrzu-wKE_jOBuuOaTXlxhPhnvj6tyu27yiq8rVq6FpeIQm7/exec", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" }
