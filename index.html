@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>طلب تيشيرت</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { background: #f8f8f8; font-family: 'Cairo', sans-serif; padding: 20px; }
+    .form-box {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fffdf5;
+      border: 2px solid gold;
+      border-radius: 16px;
+      padding: 20px;
+      color: #333;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #c9a700;
+    }
+    .form-box label {
+      display: block;
+      margin: 12px 0 4px;
+      font-weight: bold;
+    }
+    .form-box select,
+    .form-box input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .total {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #c9a700;
+      text-align: center;
+      font-weight: bold;
+    }
+    .form-box button {
+      background-color: #c9a700;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .form-box button:hover {
+      background-color: #b09100;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-box">
+  <h2>طلب تيشيرت</h2>
+
+  <form id="orderForm">
+    <input type="hidden" name="product" value="تيشيرت رجالي">
+
+    <label for="name">الاسم واللقب:</label>
+    <input type="text" id="name" name="name" placeholder="أدخل اسمك الكامل" required>
+
+    <label for="address">العنوان:</label>
+    <input type="text" id="address" name="address" placeholder="أدخل عنوانك الكامل" required>
+
+    <label for="phone">رقم الهاتف:</label>
+    <input type="text" id="phone" name="phone" placeholder="أدخل رقم هاتفك" required>
+
+    <label for="size">المقاس:</label>
+    <select id="size" name="size" onchange="updateTotal()" required>
+      <option value="900">S - 900 دج</option>
+      <option value="1000">M - 1000 دج</option>
+      <option value="1100">L - 1100 دج</option>
+      <option value="1200">XL - 1200 دج</option>
+    </select>
+
+    <label for="wilaya">الولاية:</label>
+    <select id="wilaya" name="wilaya" onchange="updateTotal()" required>
+      <option value="200">أدرار - 200 دج</option>
+      <option value="250">الجزائر - 250 دج</option>
+      <option value="300">وهران - 300 دج</option>
+      <option value="350">سطيف - 350 دج</option>
+    </select>
+
+    <label for="color">اللون:</label>
+    <select id="color" name="color" required>
+      <option value="أسود">أسود</option>
+      <option value="أبيض">أبيض</option>
+      <option value="رمادي">رمادي</option>
+    </select>
+
+    <div class="total" id="total">السعر الإجمالي: 1100 دج</div>
+
+    <input type="hidden" name="total" id="totalInput" value="1100">
+
+    <button type="submit">أرسل الطلب</button>
+  </form>
+</div>
+
+<script>
+  function updateTotal() {
+    const sizePrice = parseInt(document.getElementById("size").value);
+    const shipping = parseInt(document.getElementById("wilaya").value);
+    const total = sizePrice + shipping;
+    document.getElementById("total").innerText = `السعر الإجمالي: ${total} دج`;
+    document.getElementById("totalInput").value = total;
+  }
+
+  window.onload = updateTotal;
+
+  document.getElementById("orderForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const data = {
+      product: form.product.value,
+      name: form.name.value,
+      address: form.address.value,
+      phone: form.phone.value,
+      size: form.size.options[form.size.selectedIndex].text,
+      wilaya: form.wilaya.options[form.wilaya.selectedIndex].text,
+      color: form.color.value,
+      total: form.total.value
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbwwQqP0gAqv2JLm7i4H0N9G-PLV8lgE9TmichHvK-4qF2mTcbwrhy6s35Zh05sQ1YlU/exec", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(res => res.text())
+    .then(response => alert("✅ تم إرسال الطلب بنجاح!"))
+    .catch(err => {
+      console.error(err);
+      alert("❌ فشل في إرسال الطلب.");
+    });
+  });
+</script>
+
+</body>
+</html>
